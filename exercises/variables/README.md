@@ -141,7 +141,7 @@ So far so good right? It’s pretty straight forward. Let’s move on to exercis
 
 ### Errors
 
-Here we see another similar scenario as exercise 2, but we see a different type of syntax the : felt252 after the variable x. Let's look at the errors.
+Here we see another similar scenario as exercise 2, but we see a different type of syntax the `: felt252` after the variable `x`. Let's look at the errors.
 
 ```
 Compiling exercise_crate v0.1.0 (/Users/desmo/repos/starklings-cairo1/runner-crate/Scarb.toml)
@@ -161,13 +161,13 @@ could not compile `exercise_crate` due to previous error
 ⚠️  Failed to run exercises/variables/variables3.cairo! Please try again.
 ```
 
-The errors indicate that the expression is incomplete. Specifically, the variable x is declared with a type felt252 but is not initialized with a value.
+The errors indicate that the expression is incomplete. Specifically, the variable `x` is declared with a type `felt252` but is not initialized with a value.
 
 ### Solution
 
-In Cairo, as in Rust, you can specify types after variables. This is beneficial for clarity and type safety. Although the Cairo compiler often infers the type (defaulting to felt252 if unspecified), it's good practice to explicitly declare types, especially for beginners.
+In Cairo, as in Rust, you can specify types after variables. This is beneficial for clarity and type safety. Although the Cairo compiler often infers the type (defaulting to `felt252` if unspecified), it's good practice to explicitly declare types, especially for beginners.
 
-To fix the error, we need to initialize x with a value by adding the assignment operator = and the value.
+To fix the error, we need to initialize `x` with a value by adding the _assignment operator_ `=` and the value.
 
 This is what the updated code looks like:
 
@@ -180,14 +180,16 @@ fn main() {
 
 ### Explanation
 
-1. Type Annotation:
-    - let x: felt252; declares a variable x of type felt252 but does not initialize it.
+1. **Type Annotation:**
+    - `let x: felt252;` declares a variable `x` of type `felt252` but does not initialize it.
     - The compiler needs both declaration and initialization.
 
-2. Assignment Operator:
-    - Adding 10 initializes x with the value 10.
+2. **Assignment Operator:**
+    - Adding 10 initializes `x` with the value `10`.
 
-3. Printing the Variable:
-    - println!("x is {}", x); prints the value of x.
+3. **Printing the Variable:**
+    - `println!("x is {}", x);` prints the value of `x`.
 
 This exercise reinforces the importance of initializing variables and understanding type annotations in Cairo. Let’s move on to the next exercise.
+
+`variables4.cairo`
