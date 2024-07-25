@@ -57,7 +57,7 @@ If you’re familiar with Rust, you’ll quickly spot that the issue is that the
 
 ```
 fn main() {
-    let x = 5 ; // adding `let` before `x`
+    let x = 5; // adding `let` before `x`
     println!(" x is {}", x)
 }
 ```
@@ -73,3 +73,73 @@ let x = 5;
 2. Type Inference: While Rust and Cairo can infer types in many cases, constants and certain other values require explicit type annotations. In this example, type inference works fine because 5 is clearly an integer.
 
 3. Printing Variables: The println! macro is used to print values. In this case, it prints the value of x.
+
+```
+variables2.cairo
+```
+
+### Errors
+
+Here we have another simple function with an x variable as well as an if statement that compares x to 10 but it's not compiling. Let's look at our errors:
+
+```
+Compiling exercise_crate v0.1.0 (/Users/a.barry1/Documents/cairo/starklings-cairo1/runner-crate/Scarb.toml)
+error: Missing token TerminalEq.
+ --> /Users/a.barry1/Documents/cairo/starklings-cairo1/runner-crate/src/lib.cairo:8:10
+    let x;
+         ^
+
+error: Missing tokens. Expected an expression.
+ --> /Users/a.barry1/Documents/cairo/starklings-cairo1/runner-crate/src/lib.cairo:8:10
+    let x;
+         ^
+
+error: Unsupported feature.
+ --> /Users/a.barry1/Documents/cairo/starklings-cairo1/runner-crate/src/lib.cairo:8:10
+    let x;
+         ^
+
+could not compile `exercise_crate` due to previous error
+
+⚠️  Failed to run exercises/variables/variables2.cairo! Please try again.
+```
+
+It’s pretty clear that our first line in our function is not correct syntax and should be written differently, the compiler tells us that we’re Missing tokens. Expected an expression. So let's fix it.
+
+### Solution
+
+As we saw in the first exercise that was missing the let keyword before x this exercise is missing the value we want x to be. We fix that by adding the assignment operator = and an actual value.
+
+```
+let x;
+// to
+let x = 10;
+```
+
+Now depending on what value we use we’ll get different outputs as we can see with the else part of the if statement. Feel free to experiment and recompile with different numbers as the x value and see what happens. But here's a solution with the value 1. This would of course print: x is not ten!.
+
+```
+fn main() {
+    let x = 1;
+    if x == 10 {
+       println!("x is ten! ");
+    } else {
+        println!("x is not ten! ");
+    }
+}
+```
+
+### Explanation
+
+1. Variable Declaration and Initialization:
+    - In the initial code, let x; declares the variable x but does not initialize it with a value, which is why the compiler throws an error.
+    - Correcting it to let x = 10; initializes x with the value 10.
+
+2. Conditional Statement:
+    - The if statement checks whether x is equal to 10.
+    - If x equals 10, it prints "x is ten!".
+    - Otherwise, it prints "x is not ten!".
+
+3. Experimentation:
+    - Changing the value of x to different numbers and recompiling will result in different outputs based on the if condition.
+
