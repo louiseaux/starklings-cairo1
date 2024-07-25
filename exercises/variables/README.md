@@ -74,7 +74,6 @@ let x = 5;
 
 3. Printing Variables: The println! macro is used to print values. In this case, it prints the value of x.
 
-
 ```
 variables2.cairo
 ```
@@ -97,6 +96,8 @@ error: Unsupported feature.
  --> /Users/desmo/repos/starklings-cairo1/runner-crate/src/lib.cairo:8:10
     let x;
          ^
+could not compile `exercise_crate` due to previous error
+⚠️  Failed to run exercises/variables/variables3.cairo! Please try again.
 ```
 
 It’s pretty clear that our first line in our function is not correct syntax and should be written differently, the compiler tells us that we’re Missing tokens. Expected an expression. So let's fix it.
@@ -138,3 +139,61 @@ fn main() {
 3. Experimentation:
     - Changing the value of x to different numbers and recompiling will result in different outputs based on the if condition.
 
+So far so good right? It’s pretty straight forward. Let’s move on to exercise 3.
+
+```
+variables3.cairo
+```
+
+### Errors
+
+Here we see another similar scenario as exercise 2, but we see a different type of syntax the : felt252 after the variable x. Let's look at the errors.
+
+```
+Compiling exercise_crate v0.1.0 (/Users/desmo/repos/starklings-cairo1/runner-crate/Scarb.toml)
+error: Missing token TerminalEq.
+ --> /Users/desmo/repos/starklings-cairo1/runner-crate/src/lib.cairo:9:19
+    let x: felt252;
+                  ^
+error: Missing tokens. Expected an expression.
+ --> /Users/desmo/repos/starklings-cairo1/runner-crate/src/lib.cairo:9:19
+    let x: felt252;
+                  ^
+error: Unsupported feature.
+ --> /Users/desmo/repos/starklings-cairo1/runner-crate/src/lib.cairo:9:19
+    let x: felt252;
+                  ^
+could not compile `exercise_crate` due to previous error
+⚠️  Failed to run exercises/variables/variables3.cairo! Please try again.
+```
+
+The errors indicate that the expression is incomplete. Specifically, the variable x is declared with a type felt252 but is not initialized with a value.
+
+### Solution
+
+In Cairo, as in Rust, you can specify types after variables. This is beneficial for clarity and type safety. Although the Cairo compiler often infers the type (defaulting to felt252 if unspecified), it's good practice to explicitly declare types, especially for beginners.
+
+To fix the error, we need to initialize x with a value by adding the assignment operator = and the value.
+
+This is what the updated code looks like:
+
+```
+fn main() {
+    let x: felt252 = 10;
+    println!("x is {}", x);
+}
+```
+
+### Explanation
+
+1. Type Annotation:
+    - let x: felt252; declares a variable x of type felt252 but does not initialize it.
+    - The compiler needs both declaration and initialization.
+
+2. Assignment Operator:
+    - Adding 10 initializes x with the value 10.
+
+3. Printing the Variable:
+    - println!("x is {}", x); prints the value of x.
+
+This exercise reinforces the importance of initializing variables and understanding type annotations in Cairo. Let’s move on to the next exercise.
