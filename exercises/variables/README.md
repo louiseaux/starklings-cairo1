@@ -74,6 +74,7 @@ let x = 5;
 
 3. Printing Variables: The println! macro is used to print values. In this case, it prints the value of x.
 
+
 ```
 variables2.cairo
 ```
