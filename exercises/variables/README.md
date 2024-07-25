@@ -12,9 +12,13 @@ It is however important to clarify the fact that even though the variable can be
 - [Variables](https://book.cairo-lang.org/ch02-01-variables-and-mutability.html)
 - [Integer types](https://book.cairo-lang.org/ch02-02-data-types.html#integer-types)
 
+## Exercises
+
 ```
 variables1.cairo
 ```
+
+### Errors
 
 Our first exercise shows a basic function that is giving us an error:
 
@@ -48,6 +52,15 @@ The errors indicate several issues:
 3. Type annotations needed: The type of x is not inferred correctly by the compiler.
 
 If you’re familiar with Rust, you’ll quickly spot that the issue is that the let keyword is missing.
+
+### Solution
+
+```
+fn main() {
+    let x = 5 ; // adding `let` before `x`
+    println!(" x is {}", x)
+}
+```
 
 ### Explanation
 
