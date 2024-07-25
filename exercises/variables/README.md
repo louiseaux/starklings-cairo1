@@ -83,25 +83,19 @@ variables2.cairo
 Here we have another simple function with an x variable as well as an if statement that compares x to 10 but it's not compiling. Let's look at our errors:
 
 ```
-Compiling exercise_crate v0.1.0 (/Users/a.barry1/Documents/cairo/starklings-cairo1/runner-crate/Scarb.toml)
+Compiling exercise_crate v0.1.0 (/starklings-cairo1/runner-crate/Scarb.toml)
 error: Missing token TerminalEq.
- --> /Users/a.barry1/Documents/cairo/starklings-cairo1/runner-crate/src/lib.cairo:8:10
+ --> /Users/desmo/repos/starklings-cairo1/runner-crate/src/lib.cairo:8:10
     let x;
          ^
-
 error: Missing tokens. Expected an expression.
- --> /Users/a.barry1/Documents/cairo/starklings-cairo1/runner-crate/src/lib.cairo:8:10
+ --> /Users/desmo/repos/starklings-cairo1/runner-crate/src/lib.cairo:8:10
     let x;
          ^
-
 error: Unsupported feature.
- --> /Users/a.barry1/Documents/cairo/starklings-cairo1/runner-crate/src/lib.cairo:8:10
+ --> /Users/desmo/repos/starklings-cairo1/runner-crate/src/lib.cairo:8:10
     let x;
          ^
-
-could not compile `exercise_crate` due to previous error
-
-⚠️  Failed to run exercises/variables/variables2.cairo! Please try again.
 ```
 
 It’s pretty clear that our first line in our function is not correct syntax and should be written differently, the compiler tells us that we’re Missing tokens. Expected an expression. So let's fix it.
