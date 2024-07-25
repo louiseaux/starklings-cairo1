@@ -2,7 +2,7 @@
 
 In Cairo, variables are immutable by default.
 When a variable is immutable, once a value is bound to a name, you can’t change that value.
-You can make them mutable by adding mut in front of the variable name.
+You can make them mutable by adding `mut` in front of the variable name.
 
 It is however important to clarify the fact that even though the variable can be made mutable, Cairo works with an immutable memory model, meaning that changing the value of a variable will not change the value in memory but rather assign a new memory location to that variable.
 
@@ -14,9 +14,7 @@ It is however important to clarify the fact that even though the variable can be
 
 ## Exercises
 
-```
-variables1.cairo
-```
+`variables1.cairo`
 
 ### Errors
 
@@ -47,11 +45,11 @@ could not compile `exercise_crate` due to previous error
 
 The errors indicate several issues:
 
-1. Identifier not found: The variable x is not declared before it is used.
-2. Invalid left-hand side of assignment: The x needs to be declared properly.
-3. Type annotations needed: The type of x is not inferred correctly by the compiler.
+1. **Identifier not found:** The variable `x` is not declared before it is used.
+2. **Invalid left-hand side of assignment:** The `x` needs to be declared properly.
+3. **Type annotations needed:** The type of `x` is not inferred correctly by the compiler.
 
-If you’re familiar with Rust, you’ll quickly spot that the issue is that the let keyword is missing.
+If you’re familiar with Rust, you’ll quickly spot that the issue is that the `let` keyword is missing.
 
 ### Solution
 
@@ -64,23 +62,21 @@ fn main() {
 
 ### Explanation
 
-1. Declaration with let: In Rust and Cairo, variables must be declared before they are used. The let keyword is used for this purpose. It tells the compiler that a new variable is being declared.
+1. **Declaration with `let`:** In Rust and Cairo, variables must be declared before they are used. The `let` keyword is used for this purpose. It tells the compiler that a new variable is being declared.
 
 ```
 let x = 5;
 ```
 
-2. Type Inference: While Rust and Cairo can infer types in many cases, constants and certain other values require explicit type annotations. In this example, type inference works fine because 5 is clearly an integer.
+2. **Type Inference:** While Rust and Cairo can infer types in many cases, constants and certain other values require explicit type annotations. In this example, type inference works fine because `5` is clearly an integer.
 
-3. Printing Variables: The println! macro is used to print values. In this case, it prints the value of x.
+3. **Printing Variables:** The `println!` macro is used to print values. In this case, it prints the value of `x`.
 
-```
-variables2.cairo
-```
+`variables2.cairo`
 
 ### Errors
 
-Here we have another simple function with an x variable as well as an if statement that compares x to 10 but it's not compiling. Let's look at our errors:
+Here we have another simple function with an `x` variable as well as an `if` statement that compares `x` to `10` but it's not compiling. Let's look at our errors:
 
 ```
 Compiling exercise_crate v0.1.0 (/starklings-cairo1/runner-crate/Scarb.toml)
@@ -100,11 +96,11 @@ could not compile `exercise_crate` due to previous error
 ⚠️  Failed to run exercises/variables/variables3.cairo! Please try again.
 ```
 
-It’s pretty clear that our first line in our function is not correct syntax and should be written differently, the compiler tells us that we’re Missing tokens. Expected an expression. So let's fix it.
+It’s pretty clear that our first line in our function is not correct syntax and should be written differently, the compiler tells us that we’re `Missing tokens. Expected an expression.` So let's fix it.
 
 ### Solution
 
-As we saw in the first exercise that was missing the let keyword before x this exercise is missing the value we want x to be. We fix that by adding the assignment operator = and an actual value.
+As we saw in the first exercise that was missing the `let` keyword before `x` this exercise is missing the value we want `x` to be. We fix that by adding the _assignment operator_ `=` and an actual value.
 
 ```
 let x;
@@ -112,7 +108,7 @@ let x;
 let x = 10;
 ```
 
-Now depending on what value we use we’ll get different outputs as we can see with the else part of the if statement. Feel free to experiment and recompile with different numbers as the x value and see what happens. But here's a solution with the value 1. This would of course print: x is not ten!.
+Now depending on what value we use we’ll get different outputs as we can see with the `else` part of the `if` statement. Feel free to experiment and recompile with different numbers as the `x` value and see what happens. But here's a solution with the value `1`. This would of course print: `x is not ten!`.
 
 ```
 fn main() {
@@ -127,23 +123,21 @@ fn main() {
 
 ### Explanation
 
-1. Variable Declaration and Initialization:
-    - In the initial code, let x; declares the variable x but does not initialize it with a value, which is why the compiler throws an error.
-    - Correcting it to let x = 10; initializes x with the value 10.
+1. **Variable Declaration and Initialization:**
+    - In the initial code, `let x;` declares the variable `x` but does not initialize it with a value, which is why the compiler throws an error.
+    - Correcting it to `let x = 10;` initializes `x` with the value `10`.
 
-2. Conditional Statement:
-    - The if statement checks whether x is equal to 10.
-    - If x equals 10, it prints "x is ten!".
-    - Otherwise, it prints "x is not ten!".
+2. **Conditional Statement:**
+    - The `if` statement checks whether `x` is equal to `10`.
+    - If `x` equals `10`, it prints `x is ten!`.
+    - Otherwise, it prints `x is not ten!`.
 
-3. Experimentation:
-    - Changing the value of x to different numbers and recompiling will result in different outputs based on the if condition.
+3. **Experimentation:**
+    - Changing the value of `x` to different numbers and recompiling will result in different outputs based on the `if` condition.
 
 So far so good right? It’s pretty straight forward. Let’s move on to exercise 3.
 
-```
-variables3.cairo
-```
+`variables3.cairo`
 
 ### Errors
 
