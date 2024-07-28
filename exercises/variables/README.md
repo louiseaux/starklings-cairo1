@@ -193,3 +193,57 @@ fn main() {
 This exercise reinforces the importance of initializing variables and understanding type annotations in Cairo. Let’s move on to the next exercise.
 
 `variables4.cairo`
+
+### Errors
+
+This seems like a pretty simple exercise, and we’re told that we’re not allowed to change the `x = 5` line. But let's look at the errors and see if there's a hint as to how to fix our error.
+
+```
+Compiling exercise_crate v0.1.0 (/Users/desmo/repos/starklings-cairo1/runner-crate/Scarb.toml)
+error: Cannot assign to an immutable variable.
+ --> /Users/desmo/repos/starklings-cairo1/runner-crate/src/lib.cairo:10:5
+    x = 5; // don't change this line
+    ^***^
+could not compile `exercise_crate` due to previous error
+⚠️  Failed to run exercises/variables/variables4.cairo! Please try again.
+```
+
+The key part of the output is: `error: Cannot assign to an immutable variable.` If you're familiar with Rust, and now looking at Cairo, we need to remember that variables are _immutable_ by default. This means that we cannot simply assign a new value but must declare the variable that we want to modify as mutable. So let's see how we fix this.
+
+### Solution
+
+In Cairo, variables are immutable by default, similar to Rust (we’ll keep on reminding you). This means that you cannot reassign a value to a variable unless it is declared as mutable using the `mut` keyword.
+
+In this exercise, we are trying to assign `x` to `5` after we've already assigned `x` to `3` on line 8. This won't work unless we put the `mut` keyword in front of `x`.
+
+Here’s the updated code:
+
+```
+fn main() {
+    let mut x = 3; // add `mut` keyword
+    println!("x is {}", x);
+    x = 5; // don't change this line
+    println!("x is now {}", x);
+}
+```
+
+With this simple update we can now see that our code compiles and we successfully update the value of `x`.
+
+### Explanation
+
+1. **Immutability by Default:**
+    - In Cairo variables are immutable by default. This means that once a variable is assigned a value, it cannot be changed unless explicitly declared as mutable.
+
+2. **Mutable Variables:**
+    - To make a variable mutable, you need to use the `mut` keyword. This allows you to reassign values to the variable.
+
+3. **Assignment and Reassignment:**
+    - The line `let x = 3;` declares an immutable variable `x` and assigns it the value `3`.
+    - Trying to reassign `x` to `5` (`x = 5;`) without making `x` mutable results in a compilation error.
+    - Adding `mut` (`let mut x = 3;`) makes `x` mutable, allowing reassignment.
+
+By making this simple update, our code compiles, and we successfully update the value of `x`.
+
+For more detailed information on variables and mutability in Cairo, you can refer to the [Variables and Mutability](https://book.cairo-lang.org/ch02-01-variables-and-mutability.html) chapter in the Cairo book.
+
+`variables5.cairo`
