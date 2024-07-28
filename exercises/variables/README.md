@@ -352,7 +352,7 @@ With these changes, our code compiles successfully and outputs the values of `NU
     - Unlike variables, constants must have their types explicitly annotated.
     - The type annotation ensures clarity and helps the compiler enforce strong typing principles.
 
-2. Correcting the Code:
+2. **Correcting the Code:**
     - `const NUMBER: u8 = 3_u8;` declares a constant `NUMBER` with type `u8` and value `3`.
     - `const SMALL_NUMBER: u8 = 3_u8;` declares a constant `SMALL_NUMBER` with type `u8` and value `3`.
 
