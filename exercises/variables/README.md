@@ -247,3 +247,55 @@ By making this simple update, our code compiles, and we successfully update the 
 For more detailed information on variables and mutability in Cairo, you can refer to the [Variables and Mutability](https://book.cairo-lang.org/ch02-01-variables-and-mutability.html) chapter in the Cairo book.
 
 `variables5.cairo`
+
+### Errors
+
+In `variables5.cairo`, we face a similar exercise to `variables4.cairo`, but with an additional challenge: we can't change the line `let number = 1_u8`, and we also cannot rename the variable `number` on line 10. So, what can we do? Let's see if the compiler can help.
+
+```
+Compiling exercise_crate v0.1.0 (/Users/desmo/repos/starklings-cairo1/runner-crate/Scarb.toml)
+error: Cannot assign to an immutable variable.
+ --> /Users/desmo/repos/starklings-cairo1/runner-crate/src/lib.cairo:10:5
+    number = 3; // don't rename this variable
+    ^********^
+
+could not compile `exercise_crate` due to previous error
+⚠️  Failed to run exercises/variables/variables5.cairo! Please try again.
+```
+
+This output looks familiar — it’s the same as the previous exercise. Since we can’t use `mut`, we need to find another solution. Experienced Rust programmers might already know what to do here: **variable shadowing**.
+
+### Solution
+
+Let’s repeat it one more time! In Cairo, variables are immutable by default, but we can use a technique called shadowing. Shadowing allows us to declare a new variable with the same name as a previous variable, effectively creating a new variable that can hold a different value or type.
+
+Shadowing is done using the `let` keyword again with the same variable name. This might seem confusing at first, but it's quite powerful as it allows us to reuse variable names within different scopes or with different types.
+
+Here’s the updated code:
+
+```
+fn main() {
+    let number = 1_u8; // don't change this line
+    println!("number is {}", number);
+    let number = 3; // don't rename this variable
+    println!("number is {}", number);
+}
+```
+
+### Explanation
+
+**Shadowing:**
+- Shadowing allows you to declare a new variable with the same name as a previous variable. This new variable can have a different value or type.
+- `let number = 1_u8;` declares the first `number` with a type of `u8` and value `1`.
+- `let number = 3;` declares a new `number` variable, shadowing the previous one. This new `number` can have a different type or value.
+
+### Why Shadowing?
+
+Shadowing is useful because:
+- It allows reusing variable names without mutating the original variable.
+- It helps in maintaining cleaner code by avoiding unnecessary variable names.
+- It allows changing the type of a variable within a certain scope.
+
+For more information on shadowing, you can refer to the [Variables and Mutability](https://book.cairo-lang.org/ch02-01-variables-and-mutability.html?highlight=shadow#shadowing) chapter in the Cairo book.
+
+Alright, let’s move on to our final `variables` exercise!
