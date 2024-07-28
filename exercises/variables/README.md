@@ -299,3 +299,82 @@ Shadowing is useful because:
 For more information on shadowing, you can refer to the [Variables and Mutability](https://book.cairo-lang.org/ch02-01-variables-and-mutability.html?highlight=shadow#shadowing) chapter in the Cairo book.
 
 Alright, let’s move on to our final `variables` exercise!
+
+`variables6.cairo`
+
+### Errors
+
+In this exercise we have the introduction of the keyword `const` but other than this, we don't have too much else going on other than some print macros, but obviously the code is not compiling. Let's take a look at our errors.
+
+```
+Compiling exercise_crate v0.1.0 (/Users/desmo/repos/starklings-cairo1/runner-crate/Scarb.toml)
+error: Unexpected token, `expected ':' followed by a type.`
+ --> /Users/desmo/repos/starklings-cairo1/runner-crate/src/lib.cairo:7:13
+const NUMBER = 3;
+            ^
+error: Unexpected token, expected ':' followed by a type.
+ --> /Users/desmo/repos/starklings-cairo1/runner-crate/src/lib.cairo:8:19
+const SMALL_NUMBER = 3_u8;
+                  ^
+error: Unknown type.
+ --> /Users/desmo/repos/starklings-cairo1/runner-crate/src/lib.cairo:7:14
+const NUMBER = 3;
+             ^
+error: Unknown type.
+ --> /Users/desmo/repos/starklings-cairo1/runner-crate/src/lib.cairo:8:20
+const SMALL_NUMBER = 3_u8;
+                   ^
+could not compile `exercise_crate` due to previous error
+⚠️  Failed to run exercises/variables/variables6.cairo! Please try again.
+```
+
+It seems that the compiler is not happy with how we are declaring our constants and it actually tells us what it is expecting: `expected ':' followed by a type.` That's handy. Constants behave a little differently than variables, so let's explore how in our solution below.
+
+### Solution
+
+_Constants_ are similar to variables in that they are immutable, but they are _always_ immutable. You are not allowed to use the `mut` keyword with them. Instead of using `let`, you use `const` and you _must_ annotate the type of the value.
+Knowing this information, let's fix our code. You can read more about this in the Cairo Book here: [Constants](https://book.cairo-lang.org/ch02-01-variables-and-mutability.html?highlight=const#constants).
+
+```
+const NUMBER:u8 = 3_u8; 
+const SMALL_NUMBER:u8 = 3_u8;
+fn main() {
+    println!("NUMBER is {}", NUMBER);
+    println!("SMALL_NUMBER is {}", SMALL_NUMBER);
+}
+```
+
+With these changes, our code compiles successfully and outputs the values of `NUMBER` and `SMALL_NUMBER`.
+
+### Explanation
+
+1. **Constants Declaration:**
+    - Unlike variables, constants must have their types explicitly annotated.
+    - The type annotation ensures clarity and helps the compiler enforce strong typing principles.
+
+2. Correcting the Code:
+    - `const NUMBER: u8 = 3_u8;` declares a constant `NUMBER` with type `u8` and value `3`.
+    - `const SMALL_NUMBER: u8 = 3_u8;` declares a constant `SMALL_NUMBER` with type `u8` and value `3`.
+
+> [!NOTE]
+> While the type suffix (`3_u8`) provides a hint to the compiler about the type of the literal, Cairo still requires an explicit type annotation for constants to ensure clarity and to uphold the language's strong typing principles.
+
+## Conclusion
+
+By now, you should have a solid understanding of variable declaration, mutability, and constants in Cairo. Here's a quick recap of what we've covered:
+
+1. **Variable Declaration and Initialization:**
+    - Learned how to declare and initialize variables.
+    - Understood the importance of initializing variables to avoid compilation errors.
+
+2. **Mutability:**
+    - Explored the concept of immutability by default and how to declare mutable variables using the `mut` keyword.
+
+3. **Shadowing:**
+    - Discovered how to use variable shadowing to redeclare variables with the same name within different scopes or with different types.
+
+4. **Constants:**
+    - Understood the distinction between variables and constants.
+    - Learned how to declare constants with explicit type annotations and the importance of their immutability.
+
+These exercises have provided a foundational understanding of how Cairo handles variables and constants, which is crucial for more advanced topics and projects.
