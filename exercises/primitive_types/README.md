@@ -152,7 +152,7 @@ error: ref argument must be a variable.
         ref your_character
             ^************^
 could not compile `exercise_crate` due to previous error
-⚠️  Failed to run exercises/primitive_types/primitive_types1.cairo! Please try again.
+⚠️  Failed to run exercises/primitive_types/primitive_types2.cairo! Please try again.
 ```
 
 The compiler errors indicate missing tokens such as `TerminalUnderscore` and `TerminalEq` and `TerminalSemicolon`. Additionally, a the key errors of `Identifier not found` and `ref arguement must be a variable` suggest that `your_character` is not correctly defined and referenced.
@@ -240,3 +240,102 @@ You might have noticed that we used the `mut` keyword in the line `let mut your_
 3. **Function Semantics:** The functions `is_alphabetic` and `is_numeric` in this context do not modify the variable, but the use of ref suggests a potential for future modifications or an exclusive read, necessitating the variable to be mutable.
 
 By marking `your_character` as `mut`, you signal to the compiler and future readers of the code that `your_character` may be modified or requires exclusive access, aligning with the expected semantics of using `ref`.
+
+`primitive_types3`
+
+### Errors
+
+Here we have a very simple piece of code and our instructions are to destructure the `cat` tuple to allow us to call print on each of the members of the tuple. We already know the problem, but just so we are consistent, let's look at the errors.
+
+```
+Compiling exercise_crate v0.1.0 (/Users/desmo/repos/starklings-cairo1/runner-crate/Scarb.toml)
+error: Missing token TerminalEq.
+ --> /Users/desmo/repos/starklings-cairo1/runner-crate/src/lib.cairo:10:12
+    println!("name is {}", name);
+           ^
+error: Identifier not found.
+ --> /Users/desmo/repos/starklings-cairo1/runner-crate/src/lib.cairo:10:28
+    println!("name is {}", name);
+                           ^**^
+error: Identifier not found.
+ --> /Users/desmo/repos/starklings-cairo1/runner-crate/src/lib.cairo:11:27
+    println!("age is {}", age);
+                          ^*^
+warn: Unused variable. Consider ignoring by prefixing with `_`.
+ --> /Users/desmo/repos/starklings-cairo1/runner-crate/src/lib.cairo:8:9
+    let cat = ('Furry McFurson', 3);
+        ^*^
+warn: Unused variable. Consider ignoring by prefixing with `_`.
+ --> /Users/desmo/repos/starklings-cairo1/runner-crate/src/lib.cairo:10:5
+    println!("name is {}", name);
+    ^*****^
+error: Type annotations needed. Failed to infer ?2
+ --> /Users/desmo/repos/starklings-cairo1/runner-crate/src/lib.cairo:10:14
+    println!("name is {}", name);
+             ^**********^
+could not compile `exercise_crate` due to previous error
+⚠️  Failed to run exercises/primitive_types/primitive_types3.cairo! Please try again.
+```
+
+We get a bunch of errors, but we know the cause we don’t have our tuple destructured to allow us to print `name` and `age`. So let's fix it!
+
+### Solution
+
+```
+fn main() {
+    let cat = ('Furry McFurson', 3);
+    let (name, age) = cat;
+    println!("name is {}", name);
+    println!("age is {}", age);
+}
+```
+
+Using the `(name, age)` syntax we can destructure the `('Furry McFurson', 3)` tuple into something that we can use later on in our print statements. This seems simple enough and our code compiles with these changes, so let's move on -- but wait, what do we see on the print out!?
+
+```
+name is 1429073786950451143196132410355566
+age is 3
+✅ Successfully ran exercises/primitive_types/primitive_types3.cairo!
+```
+
+The name we have in our program is `Furry McFurson` but we get a print out that says: `1429073786950451143196132410355566`, so what's going on here?
+
+### Why Does the Output Show Numbers Instead of a String?
+
+In Cairo, short strings are represented as `felt252` (field elements), which are large numerical values. This is why printing a short string directly might show a long number instead of the expected text.
+
+The value `1429073786950451143196132410355566` is the result of encoding the entire string `Furry McFurson` into a single large integer. This encoding typically involves treating the string as a sequence of characters and converting each character into its corresponding ASCII (or Unicode) value, then packing these values into a large integer.
+
+For simplicity, let’s break down a smaller example manually to understand how it works. I’ll also show you how to do it with ‘F’.
+
+Example with a Single Character
+Let’s take ‘F’. In decimal, it is `70`, which is straightforward. You can try this in the exercise and you will see `70` if you input `F`.
+
+Example with a String
+For a string like ‘Furry’, we need to consider how each character is converted and packed together. Here’s a basic explanation:
+
+1. Convert each character to its `ASCII` value:
+
+```
+• ‘F’ -> 70
+• ‘u’ -> 117
+• ‘r’ -> 114
+• ‘r’ -> 114
+• ‘y’ -> 121
+```
+
+2. Pack these `ASCII` values together into a single large integer. This packing depends on the specific encoding scheme used. A simple scheme would be to treat the `ASCII` values as bytes in a large number.
+
+Alright, let’s not dive in too deep into the weeds here and stay focused.
+
+### Explanation
+
+1. **Tuple Destructuring:**
+    - The original problem requires us to destructure the tuple cat to access and print its individual elements. The solution correctly uses `(name, age)` to destructure the tuple.
+    - By writing let `(name, age) = cat;`, the tuple `('Furry McFurson', 3)` is split into `name` and `age`.
+
+2. **String Representation in Cairo:**
+    - In Cairo, strings are represented as `felt252` (field elements), which are large numerical values.
+    - When we print a string directly, it shows the numerical representation instead of the readable text. This is why `1429073786950451143196132410355566` appears instead of `Furry McFurson`.
+
+Alright — let’s move on to our final exercise!
