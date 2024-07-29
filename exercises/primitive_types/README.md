@@ -16,8 +16,6 @@ Cairo has several basic types that are directly implemented into the compiler, w
 4. **Strings and felt252:**
     - Cairo represents short strings as `felt252` (field elements). We’ll explore how these representations work, how to convert between strings and numerical values, and the implications for printing and data handling.
 
-By the end of this post, you’ll have a solid understanding of these basic types and how to use them in Cairo, setting a strong foundation for more advanced topics.
-
 ## Further Information
 
 [Data Types](https://book.cairo-lang.org/ch02-02-data-types.html)
@@ -28,7 +26,7 @@ By the end of this post, you’ll have a solid understanding of these basic type
 
 ### Errors
 
-Our instructions tell us to complete the bit of code above. Let’s take a look at the error output for more context.
+Let’s take a look at the error output for more context.
 
 ```
 Compiling exercise_crate v0.1.0 (/Users/desmo/repos/starklings-cairo1/runner-crate/Scarb.toml)
@@ -117,3 +115,128 @@ fn main() {
 
 Great let’s move on to the next exercise!
 
+`primitive_types2.cairo`
+
+### Errors
+
+In this exercise, we are dealing with short strings in Cairo. A short string is a string whose length is at most 31 characters, and it can fit into a single field element (felt). Short strings are actually felts and not real strings. We need to use use single quotes for short strings.
+
+```
+Compiling exercise_crate v0.1.0 (/Users/desmo/repos/starklings-cairo1/runner-crate/Scarb.toml)
+error: Missing token TerminalUnderscore.
+ --> /Users/desmo/repos/starklings-cairo1/runner-crate/src/lib.cairo:25:8
+    let  // Finish this line like the example! What's your favorite short string?
+       ^
+error: Missing token TerminalEq.
+ --> /Users/desmo/repos/starklings-cairo1/runner-crate/src/lib.cairo:25:8
+    let  // Finish this line like the example! What's your favorite short string?
+       ^
+error: Missing token TerminalSemicolon.
+ --> /Users/desmo/repos/starklings-cairo1/runner-crate/src/lib.cairo:37:6
+    }
+     ^
+error: Identifier not found.
+ --> /Users/desmo/repos/starklings-cairo1/runner-crate/src/lib.cairo:28:13
+        ref your_character
+            ^************^
+error: ref argument must be a variable.
+ --> /Users/desmo/repos/starklings-cairo1/runner-crate/src/lib.cairo:28:13
+        ref your_character
+            ^************^
+error: Identifier not found.
+ --> /Users/desmo/repos/starklings-cairo1/runner-crate/src/lib.cairo:32:13
+        ref your_character
+            ^************^
+error: ref argument must be a variable.
+ --> /Users/desmo/repos/starklings-cairo1/runner-crate/src/lib.cairo:32:13
+        ref your_character
+            ^************^
+could not compile `exercise_crate` due to previous error
+⚠️  Failed to run exercises/primitive_types/primitive_types1.cairo! Please try again.
+```
+
+The compiler errors indicate missing tokens such as `TerminalUnderscore` and `TerminalEq` and `TerminalSemicolon`. Additionally, a the key errors of `Identifier not found` and `ref arguement must be a variable` suggest that `your_character` is not correctly defined and referenced.
+
+### Solution
+
+To solve this, let’s complete the line that define’s `your_character`. Here's the solution:
+
+```
+fn main() {
+let mut my_first_initial = 'C';
+    if is_alphabetic(
+        ref my_first_initial
+    ) {
+        println!(" Alphabetical !");
+    } else if is_numeric(
+        ref my_first_initial
+    ) {
+        println!(" Numerical !");
+    } else {
+        println!(" Neither alphabetic nor numeric!");
+    }
+    let mut your_character = 'E'; // Finishing the line here
+    if is_alphabetic(
+        ref your_character
+    ) {
+        println!(" Alphabetical !");
+    } else if is_numeric(
+        ref your_character
+    ) {
+        println!(" Numerical!");
+    } else {
+        println!(" Neither alphabetic nor numeric!");
+    }
+}
+fn is_alphabetic(ref char: felt252) -> bool {
+    if char >= 'a' {
+        if char <= 'z' {
+            return true;
+        }
+    }
+    if char >= 'A' {
+        if char <= 'Z' {
+            return true;
+        }
+    }
+    false
+}
+fn is_numeric(ref char: felt252) -> bool {
+    if char >= '0' {
+        if char <= '9' {
+            return true;
+        }
+    }
+    false
+}
+```
+
+### Explanation
+
+1. **Variable Declaration and Initialization:**
+    - Initially, the code uses `let` without assigning any value to `your_character`.
+    - Correcting it to `let mut your_character = 'A';` initializes `your_character` with a short string value, which can be a letter, number, or special character.
+
+2. **Conditional Statement:**
+    - The `if` statement checks whether `my_first_initial` and `your_character` are alphabetic or numeric.
+    - If either is alphabetic, it prints `Alphabetical !`.
+    - If either is numeric, it prints `Numerical !`.
+    - Otherwise, it prints `Neither alphabetic nor numeric!`.
+
+3. **Ref Keyword:**
+    - The `ref` keyword is used to pass the variable by reference to the `is_alphabetic` and `is_numeric` functions.
+
+4. **Experimentation:**
+    - Changing the values of `my_first_initial` and `your_character` to different short string values and recompiling will result in different outputs based on the if condition.
+
+You might have noticed that we used the `mut` keyword in the line `let mut your_character = 'E';` and if you tried to experiment with removing it, you'd notice that the code doesn't compile anymore so, let's make sure we understand why that is happening.
+
+### Why Mutability is Necessary
+
+1. **Exclusive Access:** The `ref` keyword indicates that the function requires an exclusive reference to the variable. This exclusive access might involve potential changes or ensuring that no other references exist to maintain data integrity during the function’s execution.
+
+2. **Compiler Enforcement:** Rust and Cairo enforce immutability by default to ensure safety and prevent unintended side-effects. By requiring variables to be explicitly marked as mutable, the language ensures that developers are aware of where changes can occur, thus making the code more predictable and safer.
+
+3. **Function Semantics:** The functions `is_alphabetic` and `is_numeric` in this context do not modify the variable, but the use of ref suggests a potential for future modifications or an exclusive read, necessitating the variable to be mutable.
+
+By marking `your_character` as `mut`, you signal to the compiler and future readers of the code that `your_character` may be modified or requires exclusive access, aligning with the expected semantics of using `ref`.
