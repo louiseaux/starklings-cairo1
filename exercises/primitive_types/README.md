@@ -18,7 +18,7 @@ Cairo has several basic types that are directly implemented into the compiler, w
 
 ## Further Information
 
-[Data Types](https://book.cairo-lang.org/ch02-02-data-types.html)
+- [Data Types](https://book.cairo-lang.org/ch02-02-data-types.html)
 
 ## Exercises
 
