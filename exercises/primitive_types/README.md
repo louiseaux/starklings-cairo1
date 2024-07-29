@@ -339,3 +339,135 @@ Alright, let’s not dive in too deep into the weeds here and stay focused.
     - When we print a string directly, it shows the numerical representation instead of the readable text. This is why `1429073786950451143196132410355566` appears instead of `Furry McFurson`.
 
 Alright — let’s move on to our final exercise!
+
+`primitive_types4.cairo`
+
+### Errors
+
+In this exercise we are tasked with modifying the integer types and `felt252` to make the tests pass, seems simple enough let’s take a look at the errors for any hints on how to fix this problem.
+
+```
+Compiling test(exercise_crate_unittest) exercise_crate v0.1.0 (/Users/desmo/repos/starklings-cairo1/runner-crate/Scarb.toml)
+error: Unexpected return type. Expected: "core::felt252", found: "()".
+ --> /Users/desmo/repos/starklings-cairo1/runner-crate/src/lib.cairo:21:38
+fn convert_to_felt(x: u8) -> felt252 { //TODO return x as a felt252.
+                                     ^*****************************^
+error: Unexpected return type. Expected: "core::integer::u8", found: "()".
+ --> /Users/desmo/repos/starklings-cairo1/runner-crate/src/lib.cairo:24:41
+fn convert_felt_to_u8(x: felt252) -> u8 { //TODO return x as a u8.
+                                        ^************************^
+error: The value does not fit within the range of type core::integer::u8.
+ --> /Users/desmo/repos/starklings-cairo1/runner-crate/src/lib.cairo:38:47
+    assert(sum_big_numbers(255_u8, 255_u8) == 510_u8, 'Something went wrong');
+                                              ^****^
+could not compile `exercise_crate` due to previous error
+⚠️  Failed to run exercises/primitive_types/primitive_types4.cairo! Please try again.
+```
+
+Here we see that we have 3 main errors `Unexpected return type` which is for our unfinished functions, and `error: The value does not fit within the range of type core::integer::u8` which is telling us that the value doesn't fit in a `u8`. So let's fix this.
+
+### Solution
+
+This one is a little more involved, so let’s work through the solution step-by-step. As we know the tasks involve modifying types to prevent overflow and converting between integer types and `felt252`.
+
+**Step 1: Prevent Overflow in sum_big_numbers**
+The function `sum_big_numbers` currently takes `u8` types, which can hold values from `0` to `255`. Summing two `u8` values that are close to their maximum can cause an overflow. To prevent this, we’ll change the types to a larger integer type, such as `u16`, which can hold values from `0` to `65535`.
+
+**Step 2: Implement convert_to_felt and convert_felt_to_u8**
+For converting between `u8` and `felt252`, we’ll use the .into() and .try_into() traits.
+
+**Step 3: Modify Tests**
+Update the types in the test `test_sum_big_numbers` to reflect the changes made in the `sum_big_numbers` function.
+
+Here’s the modified code:
+
+```
+use traits::Into;
+use traits::TryInto;
+use option::OptionTrait;
+fn sum_u8s(x: u8, y: u8) -> u8 {
+    x + y
+}
+// Modified the types of this function to prevent an overflow when summing big values
+// from u8 to u16
+fn sum_big_numbers(x: u16, y: u16) -> u16 {
+    x + y
+}
+// Return x as a felt252
+fn convert_to_felt(x: u8) -> felt252 {
+    x.into() // use .into() method on x
+}
+// Return x as a u8
+fn convert_felt_to_u8(x: felt252) -> u8 {
+    x.try_into().unwrap() // use .try_into() with .unwrap() methods on x
+}
+#[test]
+fn test_sum_u8s() {
+    assert(sum_u8s(1, 2_u8) == 3_u8, 'Something went wrong');
+}
+#[test]
+fn test_sum_big_numbers() {
+    // Modified this test to use the correct integer types from u8 to u16
+    assert(sum_big_numbers(255_u16, 255_u16) == 510_u16, 'Something went wrong');
+}
+#[test]
+fn test_convert_to_felt() {
+    assert(convert_to_felt(1_u8) == 1, 'Type conversion went wrong');
+}
+#[test]
+fn test_convert_to_u8() {
+    assert(convert_felt_to_u8(1) == 1_u8, 'Type conversion went wrong');
+}
+```
+
+with these these changes our code compiles and tests pass!
+
+```
+Compiling test(exercise_crate_unittest) exercise_crate v0.1.0 (/starklings-cairo1/runner-crate/Scarb.toml)
+    Finished release target(s) in 1 second
+running 4 tests
+test exercise_crate::test_convert_to_felt ... ok (gas usage est.: 900)
+test exercise_crate::test_sum_big_numbers ... ok (gas usage est.: 1670)
+test exercise_crate::test_convert_to_u8 ... ok (gas usage est.: 2010)
+test exercise_crate::test_sum_u8s ... ok (gas usage est.: 1670)
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 filtered out;
+```
+
+### Explanation
+
+1. **Prevent Overflow:**
+    - The function `sum_big_numbers` originally used `u8` types, which can only hold values from `0` to `255`. Summing two large `u8` values could cause an overflow.
+    - To prevent this, we changed the parameter types from `u8` to `u16`. The `u16` type can hold values from `0` to `65535`, thus avoiding overflow when summing large values.
+
+2. **Implement Conversion Functions:**
+    - `convert_to_felt`: This function converts a `u8` value to a `felt252`. Using the `.into()` trait, the conversion is straightforward.
+    - `convert_felt_to_u8`: This function converts a `felt252` value back to a `u8`. The `.try_into()` trait is used for this conversion, and `.unwrap()` ensures the conversion is successful. If it isn't, the program will panic.
+
+3. **Modify Tests:**
+    - Updated the `test_sum_big_numbers` test to use `u16` types for the values and the expected result. This matches the updated function signature and ensures the test values do not cause overflow.
+    - The tests for conversion functions `test_convert_to_felt` and `test_convert_to_u8` confirm that the type conversions work as expected.
+
+By modifying the integer types from `u8` to `u16`, we prevent overflow in the `sum_big_numbers` function. We implemented the conversion functions using `.into()` and `.try_into()` traits, ensuring seamless type conversions between `u8` and `felt252`. The tests were updated to reflect these changes, verifying that the functions operate correctly and the integer operations are safe from overflow.
+
+## Conclusion
+Alright, we’ve finished! Here’s a recap of what we covered:
+
+1. **Basic Variable Initialization:**
+    - We started with simple variable initialization and boolean checks. By defining and using boolean variables, we learned how to control the flow of our program based on conditional statements.
+
+2. **Tuple Destructuring:**
+    - We looked into tuple destructuring, which allowed us to break down composite data structures into individual elements. This helped us print and manipulate each member of a tuple effectively.
+
+3. **Understanding Cairo’s String Representation:**
+    - We discovered how Cairo represents short strings as `felt252`, which are large numerical values. We examined how these numerical values correspond to the original string and learned why they appear as large numbers when printed directly.
+
+4. **Preventing Overflow:**
+    - We addressed the issue of overflow by changing the integer types in our functions. By upgrading from `u8` to `u16`, we ensured that our functions could handle larger values without running into overflow problems.
+
+5. **Type Conversion:**
+    - We implemented functions to convert between different integer types and `felt252`. Using the `.into()` and `.try_into()` traits, we efficiently converted `u8` values to `felt252` and vice versa, ensuring compatibility and correctness in our operations.
+
+6. **Modifying Tests:**
+    - Throughout the exercises, we modified tests to verify the correctness of our functions. These tests ensured that our functions behaved as expected, handling edge cases and type conversions properly.
+
+By working through these exercises, we’ve unlocked a deeper understanding of primitive types in Cairo and learned how to manipulate them effectively. We’ve mastered writing robust code that seamlessly handles various data types and skillfully avoids common pitfalls like overflow. These foundational skills are our stepping stones as we venture into more advanced and exciting topics in Cairo programming.
