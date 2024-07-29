@@ -1,5 +1,7 @@
 # Variables
 
+## Overview
+
 In Cairo, variables are immutable by default.
 When a variable is immutable, once a value is bound to a name, you can’t change that value.
 You can make them mutable by adding `mut` in front of the variable name.
@@ -8,9 +10,9 @@ It is however important to clarify the fact that even though the variable can be
 
 ## Further information
 
-- [Memory model (from Cairo 0)](https://www.cairo-lang.org/docs/how_cairo_works/cairo_intro.html#memory-model)
-- [Variables](https://book.cairo-lang.org/ch02-01-variables-and-mutability.html)
-- [Integer types](https://book.cairo-lang.org/ch02-02-data-types.html#integer-types)
+- [Memory model (from Cairo 0)](https://www.cairo-lang.org/docs/how_cairo_works/cairo_intro.html#memory-model) — Explains how Cairo handles memory operations, emphasizing its immutable memory model.
+- [Variables](https://book.cairo-lang.org/ch02-01-variables-and-mutability.html) — Detailed guide on how variables work in Cairo and how mutability can be applied.
+- [Integer types](https://book.cairo-lang.org/ch02-02-data-types.html#integer-types) — Overview of integer data types available in Cairo.
 
 ## Exercises
 
