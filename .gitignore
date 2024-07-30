@@ -13,5 +13,3 @@ rust-project.json
 *.o
 solutions/
 **/runner-crate/src/lib.cairo
-package.json
-starklings-cairo1-1.0.0.vsix
