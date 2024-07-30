@@ -7,6 +7,6 @@ fn main() {
     call_me(3);
 }
 
-fn call_me(num:) {
+fn call_me(num: usize) {
     println!("num is {}", num);
 }
