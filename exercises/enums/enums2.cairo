@@ -9,7 +9,7 @@ use traits::Into;
 enum Message { // TODO: define the different variants used below
     Quit,
     Echo: felt252,
-    Move: (u32, u32),
+    Move: (u8, u8),
     ChangeColor: (u8, u8, u8),
 }
 
