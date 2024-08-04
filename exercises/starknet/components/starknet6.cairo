@@ -3,8 +3,6 @@
 // This should add OwnableComponent containing functionality which any contracts can include.
 // But something is fishy here as this component is not working, can you find the error and make the tests pass?
 
-// I AM NOT DONE
-
 use starknet::ContractAddress;
 
 #[starknet::interface]
@@ -13,6 +11,7 @@ trait IOwnable<TContractState> {
     fn set_owner(ref self: TContractState, new_owner: ContractAddress);
 }
 
+#[starknet::component]
 mod OwnableComponent {
     use starknet::ContractAddress;
     use super::IOwnable;
